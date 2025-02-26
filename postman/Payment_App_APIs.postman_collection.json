@@ -1,0 +1,174 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+		"name": "Payment App APIs",
+		"description": "API collection for the Payment App using Clover integration",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Generate Payment Link",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orderId\": \"ORD-123456\",\n    \"customer\": {\n        \"name\": \"John Doe\",\n        \"email\": \"john.doe@example.com\"\n    },\n    \"amount\": 99.99,\n    \"currency\": \"USD\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/payment/generate",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "payment", "generate"]
+				},
+				"description": "Generate a new payment link using Clover"
+			},
+			"response": [
+				{
+					"name": "Success Response",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"orderId\": \"ORD-123456\",\n    \"customer\": {\n        \"name\": \"John Doe\",\n        \"email\": \"john.doe@example.com\"\n    },\n    \"amount\": 99.99,\n    \"currency\": \"USD\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/payment/generate"
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"paymentLink\": \"https://sandbox.dev.clover.com/pay/1234abcd\",\n    \"status\": \"PENDING\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Check Payment Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/payment/status/:orderId",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "payment", "status", ":orderId"],
+					"variable": [
+						{
+							"key": "orderId",
+							"value": "ORD-123456",
+							"description": "The order ID to check status for"
+						}
+					]
+				},
+				"description": "Check the status of a payment"
+			},
+			"response": [
+				{
+					"name": "Success Response",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/payment/status/ORD-123456"
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"orderId\": \"ORD-123456\",\n    \"paymentStatus\": \"PAID\",\n    \"transactionId\": \"CLV-TXID-123456\",\n    \"amount\": 99.99,\n    \"currency\": \"USD\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Clover Webhook",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"PAYMENT_SUCCESS\",\n    \"orderId\": \"CLV-ORD-123456\",\n    \"paymentId\": \"CLV-TXID-123456\",\n    \"amount\": 9999,\n    \"currency\": \"USD\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/payment/webhook",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "payment", "webhook"]
+				},
+				"description": "Webhook endpoint for Clover payment notifications"
+			},
+			"response": [
+				{
+					"name": "Success Response",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"PAYMENT_SUCCESS\",\n    \"orderId\": \"CLV-ORD-123456\",\n    \"paymentId\": \"CLV-TXID-123456\",\n    \"amount\": 9999,\n    \"currency\": \"USD\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/payment/webhook"
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3001",
+			"type": "string"
+		}
+	]
+}
